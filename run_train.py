@@ -60,8 +60,8 @@ def train_step(model, optimizer, criterion, view1, view2):
 
 
 def get_config():
-    return {'batch_size': 64, 'num_workers': 1, 'T': 1., 'epochs': 100,
-            'lr': 4.8, 'weight_decay': 10e-6, 'device': set_device()}
+    return {'batch_size': 64, 'num_workers': 1, 'T': 1., 'epochs': 1, 'lr': 4.8,
+            'weight_decay': 10e-6, 'device': set_device()}
 
 
 def train(config):
