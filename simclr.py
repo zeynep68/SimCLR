@@ -31,7 +31,7 @@ class SimCLRNet(nn.Module):
         self.pretrain = pretrain
 
         self.encoder = Encoder()
-        self.head = ProjectionHead(0, num_classes)
+        self.head = ProjectionHead(2048, num_classes)
 
     def forward(self, x):
         x = self.encoder(x)
