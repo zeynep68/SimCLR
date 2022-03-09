@@ -2,7 +2,7 @@ import torchvision.transforms as T
 
 
 class DataAugmentation:
-    """ A stochastic data augmentation module. """
+    """ A stochastic data augmentation module. Returns 2 views of an image. """
 
     def __init__(self, img_size=96):
         gaussian_blur = T.GaussianBlur(kernel_size=3)
@@ -15,4 +15,4 @@ class DataAugmentation:
                                                 std=(0.229, 0.224, 0.225))])
 
     def __call__(self, x):
-        return self.transform(x)
+        return self.transform(x), self.transform(x)
