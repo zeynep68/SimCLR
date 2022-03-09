@@ -16,10 +16,11 @@ def dataloader(dataset, batch_size, num_workers):
 
 
 def train(config):
-    train = load_unlabeled_data(100_000, config['num_workers'])
+    train = load_unlabeled_data(256, config['num_workers'])
 
-    for data in train:
+    for idx, data in enumerate(train):
         inputs, labels = data
+        print(f"{idx}: {inputs.shape}")
 
 
 def config():
