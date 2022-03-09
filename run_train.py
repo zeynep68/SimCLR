@@ -30,7 +30,7 @@ def get_dataloader(dataset, batch_size, num_workers):
                       num_workers=num_workers)
 
 
-def train(config):
+def train_one_epoch(config):
     train = load_unlabeled_data(256, config['num_workers'])
 
     for (view1, view2), _ in train:
@@ -41,6 +41,11 @@ def train(config):
 def config():
     return {'batch_size': 64, 'num_workers': 1, 'T': 1., 'epochs': 100,
             'lr': 4.8, 'weight_decay': 10e-6, 'device': set_device()}
+
+
+def train(config):
+    for _ in range(config['epochs']):
+        train_one_epoch(config)
 
 
 if __name__ == "__main__":
