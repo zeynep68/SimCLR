@@ -60,11 +60,12 @@ def get_dataloader(dataset, batch_size, num_workers):
 def train(config):
     train = load_unlabeled_data(256, config['num_workers'])
 
-    for view1, view2 in train:
+    for view1, view2, t in train:
         view1 = view1.to(config['device'])
         view2 = view2.to(config['device'])
         print(view1.shape)
         print(view2.shape)
+        print('t:', t)
 
 
 def config():
