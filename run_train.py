@@ -49,4 +49,5 @@ def train(config):
 
 
 if __name__ == "__main__":
+    set_seed()
     train(config())
