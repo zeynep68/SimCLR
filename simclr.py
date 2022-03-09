@@ -8,6 +8,7 @@ class Encoder(nn.Module):
 
         self.model = resnet50()
         self.model = nn.Sequential(*list(self.model.children())[:-1])
+        # self.model.fc = nn.Identity()
 
     def forward(self, x):
         return self.model(x)
