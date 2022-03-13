@@ -34,14 +34,8 @@ def get_dataloader(dataset, batch_size, num_workers):
                       num_workers=num_workers)
 
 
-def train_one_epoch(config):
-    train = load_unlabeled_data(256, config['num_workers'])
-
-    model = SimCLRNet()
-    criterion = ContrastiveLoss()
-    optimizer = Adam(model.parameters())
-
-    for (view1, view2), _ in train:
+def train_one_epoch(config, trainloader, model, optimizer, criterion):
+    for (view1, view2), _ in trainloader:  # num_batches
         view1 = view1.to(config['device'])
         view2 = view2.to(config['device'])
 
@@ -60,15 +54,23 @@ def train_step(model, optimizer, criterion, view1, view2):
 
 
 def get_config():
-    return {'batch_size': 64, 'num_workers': 1, 'T': 1., 'epochs': 1, 'lr': 4.8,
+    return {'batch_size': 64, 'num_workers': 1, 'T': 1., 'epochs': 1, 'lr': 3e-4,
             'weight_decay': 10e-6, 'device': set_device()}
 
 
-def train(config):
+def pretrain(config):
+    # TODO: is this correct??
+    # or is the order in which batches are created same??
+    trainloader = load_unlabeled_data(256, config['num_workers'])
+
+    model = SimCLRNet()
+    criterion = ContrastiveLoss()
+    optimizer = Adam(model.parameters())
+
     for _ in range(config['epochs']):
-        train_one_epoch(config)
+        train_one_epoch(config, trainloader, model, criterion, optimizer)
 
 
 if __name__ == "__main__":
     set_seed()
-    train(get_config())
+    pretrain(get_config())
