@@ -8,8 +8,8 @@ from torchvision.datasets import STL10
 
 from simclr import SimCLRNet
 #from loss import ContrastiveLoss
-from loss_1 import ContrastiveLoss
-
+from loss_2 import ContrastiveLoss
+import torch.nn.functional as F
 def set_seed(seed=225):
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
