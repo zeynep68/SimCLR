@@ -72,7 +72,7 @@ def pretrain(config):  # TODO: rename because here: learn representations
     optimizer = Adam(model.parameters())
 
     for _ in range(config['epochs']):
-        train_one_epoch(config, trainloader, model, criterion, optimizer)
+        train_one_epoch(config, trainloader, model, optimizer, criterion)
 
     # TODO: save model
 
