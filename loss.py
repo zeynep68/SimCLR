@@ -35,23 +35,25 @@ class ContrastiveLoss(nn.Module):
 
         # just positive pairs - in each row one value for pos. pair
         nominator = cosine_similarity * mask
-        print(nominator[0])
-        print(nominator[1])
-        print()
-        print()
         nominator = nominator.sum(axis=1)
-        print(nominator[0])
-        print(nominator[1])
 
         # for denominator just mask-out self contrast cases
+        # contains negative & positive pairs
         mask = torch.ones_like(mask)
-        mask[size, size] = 0  # contains negative & positive pairs
+        mask[size, size] = 0
 
         mask = mask.to(self.device)
-
+        print('nominator:', nominator.shape)
         # compute log
         denominator = torch.exp(cosine_similarity) * mask
-        denominator = torch.log(denominator.sum(axis=1, keepdims=True))
+        print('denominator:', denominator.shape)
+        print(denominator[0])
+        denominator = denominator.sum(axis=1, keepdims=True)
+        print()
+        print()
+        print(denominator.shape)
+        print(denominator[0])
+        denominator = torch.log(denominator)
 
         loss = nominator - denominator  # - because of log
 
