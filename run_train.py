@@ -35,6 +35,8 @@ def get_dataloader(dataset, batch_size, num_workers):
 
 
 def train_one_epoch(config, trainloader, model, optimizer, criterion):
+    model.train()
+
     for (view1, view2), _ in trainloader:  # num_batches
         view1 = view1.to(config['device'])
         view2 = view2.to(config['device'])
@@ -54,8 +56,8 @@ def train_step(model, optimizer, criterion, view1, view2):
 
 
 def get_config():
-    return {'batch_size': 64, 'num_workers': 1, 'T': 1., 'epochs': 1, 'lr': 3e-4,
-            'weight_decay': 10e-6, 'device': set_device()}
+    return {'batch_size': 64, 'num_workers': 1, 'T': 1., 'epochs': 1,
+            'lr': 3e-4, 'weight_decay': 10e-6, 'device': set_device()}
 
 
 def pretrain(config):
@@ -70,7 +72,11 @@ def pretrain(config):
     for _ in range(config['epochs']):
         train_one_epoch(config, trainloader, model, criterion, optimizer)
 
+    # TODO: save model
+
 
 if __name__ == "__main__":
     set_seed()
-    pretrain(get_config())
+    pretrain(get_config())  # TODO: gradient accumulation
+
+    # fine-tun on supervised stl10
