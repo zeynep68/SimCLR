@@ -68,7 +68,7 @@ def pretrain(config):  # TODO: rename because here: learn representations
     trainloader = load_unlabeled_data(256, config['num_workers'])
 
     model = SimCLRNet()
-    criterion = ContrastiveLoss()
+    criterion = ContrastiveLoss(config['batch_size'])
     optimizer = Adam(model.parameters())
 
     for _ in range(config['epochs']):
