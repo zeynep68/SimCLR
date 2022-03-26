@@ -53,4 +53,4 @@ class ContrastiveLoss(nn.Module):
         loss = nominator - denominator  # - because of log
         loss = - (nominator / num_pos_pairs)
 
-        return loss.mean()
+        return loss.view(self.num_views, self.batch_size).mean()
