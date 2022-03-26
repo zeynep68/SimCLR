@@ -7,8 +7,8 @@ from augmentation import DataAugmentation
 from torchvision.datasets import STL10
 
 from simclr import SimCLRNet
-from loss import ContrastiveLoss
-
+#from loss import ContrastiveLoss
+from loss_1 import ContrastiveLoss
 
 def set_seed(seed=225):
     torch.manual_seed(seed)
@@ -51,7 +51,14 @@ def train_step(model, optimizer, criterion, view1, view2):
     outputs1 = model(view1)
     outputs2 = model(view2)
 
-    loss = criterion(outputs1, outputs2)
+    view1 = F.normalize(view1, dim=1)
+    view2 = F.normalize(view2, dim=1)
+
+    # concatenate view vectors along batch dim
+    views = torch.cat((view1, view2), dim=0)
+
+    #loss = criterion(outputs1, outputs2)
+    loss = criterion(views)
     print(loss)
     loss.backward()
     optimizer.step()
