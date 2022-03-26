@@ -48,7 +48,7 @@ class ContrastiveLoss(nn.Module):
         # compute log
         denominator = torch.exp(cosine_similarity) * mask
 
-        denominator = denominator.sum(axis=1, keepdims=True)
+        denominator = denominator.sum(axis=1, keepdims=False)
 
         denominator = torch.log(denominator)
 
