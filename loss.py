@@ -29,13 +29,17 @@ class ContrastiveLoss(nn.Module):
         size = torch.arange(self.num_views * self.batch_size)
         mask[size, size] = 0
 
-        num_pos_pairs = mask.sum(axis=1)
-        print('pos_pairs:', num_pos_pairs, num_pos_pairs.shape)
+        num_pos_pairs = mask.sum(axis=1)  # self.views * self.batch_size
+
         mask = mask.to(self.device)
 
         # just positive pairs
         nominator = cosine_similarity * mask
-
+        print(nominator.shape)
+        print(nominator[0])
+        print()
+        print()
+        print(nominator[1])
         # for denominator just mask-out self contrast cases
         mask1 = torch.ones_like(mask)
         mask1[size, size] = 0  # contains negative & positive cases
