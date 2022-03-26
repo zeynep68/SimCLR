@@ -51,9 +51,6 @@ class ContrastiveLoss(nn.Module):
         denominator = torch.log(denominator)
 
         loss = nominator - denominator  # - because of log
-        print(loss.shape)
-
         loss = - (nominator / num_pos_pairs)
-        print(loss.shape)
 
-        return loss.view(self.num_views, self.batch_size).mean()
+        return loss.mean()
