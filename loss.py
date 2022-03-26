@@ -35,6 +35,7 @@ class ContrastiveLoss(nn.Module):
         # just positive pairs
         logits = cosine_similarity * mask
         print('logits:', logits.shape)
+        print(logits[0])
 
         # compute log
         denominator = torch.exp(logits)
