@@ -35,6 +35,7 @@ def get_dataloader(dataset, batch_size, num_workers):
 
 
 def train_one_epoch(config, trainloader, model, optimizer, criterion):
+    model.to(config['device'])
     model.train()
 
     for (view1, view2), _ in trainloader:  # num_batches
