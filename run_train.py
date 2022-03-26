@@ -23,10 +23,10 @@ def set_device():
     return torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
-def load_unlabeled_data(batch_size, num_workers):
+def load_unlabeled_data(config):
     trainset = STL10(root='./data', download=True, transform=DataAugmentation(),
                      split='unlabeled')
-    return get_dataloader(trainset, batch_size, num_workers)
+    return get_dataloader(trainset, config['batch_size'], config['num_workers'])
 
 
 def get_dataloader(dataset, batch_size, num_workers):
@@ -50,7 +50,6 @@ def train_step(model, optimizer, criterion, view1, view2):
 
     outputs1 = model(view1)
     outputs2 = model(view2)
-    print(outputs2.shape)
 
     loss = criterion(outputs1, outputs2)
     loss.backward()
@@ -65,7 +64,7 @@ def get_config():
 def pretrain(config):  # TODO: rename because here: learn representations
     # TODO: is this correct??
     # or is the order in which batches are created same??
-    trainloader = load_unlabeled_data(256, config['num_workers'])
+    trainloader = load_unlabeled_data(config)
 
     model = SimCLRNet()
     criterion = ContrastiveLoss(config['batch_size'])
