@@ -30,7 +30,7 @@ class ContrastiveLoss(nn.Module):
         mask[size, size] = 0
 
         num_pos_pairs = mask.sum(axis=1)
-        print('pos_pairs:', num_pos_pairs)
+        print('pos_pairs:', num_pos_pairs, num_pos_pairs.shape)
         mask = mask.to(self.device)
 
         # just positive pairs
