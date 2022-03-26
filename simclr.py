@@ -1,12 +1,12 @@
 import torch.nn as nn
-from torchvision.models import resnet50
+from torchvision.models import resnet18
 
 
 class Encoder(nn.Module):
     def __init__(self):
         super().__init__()
 
-        self.model = resnet50()
+        self.model = resnet18()
         self.model = nn.Sequential(*list(self.model.children())[:-1])
         # self.model.fc = nn.Identity()
 
@@ -15,27 +15,27 @@ class Encoder(nn.Module):
 
 
 class ProjectionHead(nn.Module):
-    def __init__(self, in_dim, num_classes):
+    def __init__(self, resnet_dim, embedding_dim):
         super().__init__()
         self.head = nn.Sequential(nn.Flatten(),
-                                  nn.Linear(in_dim, 128),
+                                  nn.Linear(resnet_dim, resnet_dim),
                                   nn.ReLU(),
-                                  nn.Linear(128, num_classes))
+                                  nn.Linear(resnet_dim, embedding_dim))
 
     def forward(self, x):
         return self.head(x)
 
 
 class SimCLRNet(nn.Module):
-    def __init__(self, num_classes=10, pretrain=True):
+    def __init__(self, embedding_dim=128, resnet_dim=512, pretrain=True):
         super().__init__()
         self.pretrain = pretrain
 
         self.encoder = Encoder()
-        self.head = ProjectionHead(2048, num_classes)
+        self.head = ProjectionHead(resnet_dim, embedding_dim)
 
     def forward(self, x):
-        x = self.encoder(x)
+        representation = self.encoder(x)
 
         # if prediction (classification) use h instead of g(h)
-        return self.head(x) if self.pretrain else x
+        return self.head(representation) if self.pretrain else representation
