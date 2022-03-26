@@ -52,6 +52,7 @@ def train_step(model, optimizer, criterion, view1, view2):
     outputs2 = model(view2)
 
     loss = criterion(outputs1, outputs2)
+    print(loss)
     loss.backward()
     optimizer.step()
 
