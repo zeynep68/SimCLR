@@ -3,3 +3,5 @@
 data/
 
 torch_env/
+
+__pycache__/
