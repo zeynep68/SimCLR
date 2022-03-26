@@ -49,6 +49,7 @@ def train_step(model, optimizer, criterion, view1, view2):
 
     outputs1 = model(view1)
     outputs2 = model(view2)
+    print(outputs2.shape)
 
     loss = criterion(outputs1, outputs2)
     loss.backward()
@@ -60,7 +61,7 @@ def get_config():
             'lr': 3e-4, 'weight_decay': 10e-6, 'device': set_device()}
 
 
-def pretrain(config):
+def pretrain(config):  # TODO: rename because here: learn representations
     # TODO: is this correct??
     # or is the order in which batches are created same??
     trainloader = load_unlabeled_data(256, config['num_workers'])
