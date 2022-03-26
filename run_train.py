@@ -57,8 +57,9 @@ def train_step(model, optimizer, criterion, view1, view2):
 
 
 def get_config():
-    return {'batch_size': 64, 'num_workers': 1, 'T': 1., 'epochs': 1,
-            'lr': 3e-4, 'weight_decay': 10e-6, 'device': set_device()}
+    return {'batch_size': 64, 'num_workers': 1, 'temperature': 0.1, 'epochs': 1,
+            'lr': 3e-4, 'weight_decay': 10e-6, 'device': set_device(),
+            'num_views': 2}
 
 
 def pretrain(config):  # TODO: rename because here: learn representations
@@ -67,7 +68,7 @@ def pretrain(config):  # TODO: rename because here: learn representations
     trainloader = load_unlabeled_data(config)
 
     model = SimCLRNet()
-    criterion = ContrastiveLoss(config['batch_size'])
+    criterion = ContrastiveLoss(config['batch_size'], config['device'])
     optimizer = Adam(model.parameters())
 
     for _ in range(config['epochs']):

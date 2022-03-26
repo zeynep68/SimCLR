@@ -4,10 +4,11 @@ import torch.nn.functional as F
 
 
 class ContrastiveLoss(nn.Module):
-    def __init__(self, batch_size, temperature=0.1, num_views=2):
+    def __init__(self, batch_size, device, temperature=0.1, num_views=2):
         super().__init__()
         self.batch_size = batch_size
         self.num_views = num_views
+        self.device = device
 
         self.temperature = temperature
 
@@ -27,6 +28,8 @@ class ContrastiveLoss(nn.Module):
         # mask-out self contrast cases
         size = torch.arange(self.num_views * self.batch_size)
         mask[size, size] = 0
+
+        mask = mask.to(self.device)
         print('mask:', mask.shape)
         print('cosine_sim:', cosine_similarity.shape)
         # just positive pairs
