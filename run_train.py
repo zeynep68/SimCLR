@@ -48,8 +48,8 @@ def train_one_epoch(config, trainloader, model, optimizer, criterion):
 def train_step(model, optimizer, criterion, view1, view2):
     optimizer.zero_grad()
 
-    outputs1 = model(view1)
-    outputs2 = model(view2)
+    outputs1 = model.project(view1)
+    outputs2 = model.project(view2)
 
     loss = criterion(outputs1, outputs2)
     print(loss)
