@@ -6,8 +6,8 @@ class Encoder(nn.Module):
     def __init__(self):
         super().__init__()
         self.model = resnet18()
-        self.model = nn.Sequential(*list(self.model.children())[:-1])  # TODO
-        # # self.model.fc = nn.Identity()
+        #self.model = nn.Sequential(*list(self.model.children())[:-1])  # TODO
+        self.model.fc = nn.Identity()
 
     def forward(self, x):
         return self.model(x)
@@ -21,8 +21,8 @@ class ProjectionHead(nn.Module):
                                   nn.Linear(resnet_dim, embedding_dim))
 
     def forward(self, x):
-        print(x.shape)
-        x = x.view(x.shape[0], -1)
+        #print(x.shape)
+        #x = x.view(x.shape[0], -1)
         print(x.shape)
         exit()
         return self.head(x)
