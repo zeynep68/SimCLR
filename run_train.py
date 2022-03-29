@@ -71,7 +71,7 @@ def learn_representations(config):
 
     model = SimCLRNet()
     criterion = ContrastiveLoss(config['batch_size'], config['device'])
-    optimizer = Adam(model.parameters())
+    optimizer = Adam(model.parameters(), lr=config['lr'])
 
     for _ in range(config['epochs']):
         train_one_epoch(config, trainloader, model, optimizer, criterion)
