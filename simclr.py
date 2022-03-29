@@ -23,8 +23,8 @@ class ProjectionHead(nn.Module):
     def forward(self, x):
         #print(x.shape)
         #x = x.view(x.shape[0], -1)
-        print(x.shape)
-        exit()
+        #print(x.shape)
+        ##exit()
         return self.head(x)
 
 
