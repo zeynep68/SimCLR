@@ -39,10 +39,14 @@ def train_one_epoch(config, trainloader, model, optimizer, criterion):
     model.train()
 
     for (view1, view2), _ in trainloader:  # num_batches
-        view1 = view1.to(config['device'])
-        view2 = view2.to(config['device'])
+        print(view1)
+        print()
+        print()
+        print()
+        #view1 = view1.to(config['device'])
+        #view2 = view2.to(config['device'])
 
-        train_step(model, optimizer, criterion, view1, view2)
+        #train_step(model, optimizer, criterion, view1, view2)
 
 
 def train_step(model, optimizer, criterion, view1, view2):
