@@ -5,11 +5,9 @@ from torchvision.models import resnet18
 class Encoder(nn.Module):
     def __init__(self):
         super().__init__()
-
         self.model = resnet18()
-        # TODO: extract method
-        self.model = nn.Sequential(*list(self.model.children())[:-1])
-        # self.model.fc = nn.Identity()
+        self.model = nn.Sequential(*list(self.model.children())[:-1])  # TODO
+        # # self.model.fc = nn.Identity()
 
     def forward(self, x):
         return self.model(x)
@@ -28,16 +26,14 @@ class ProjectionHead(nn.Module):
 
 
 class SimCLRNet(nn.Module):
-    def __init__(self, embedding_dim=128, resnet_dim=512, pretrain=True):
+    def __init__(self, embedding_dim=128, resnet_dim=512):
         super().__init__()
-        # TODO: remove parameter; instead make another function predict?
-        self.pretrain = pretrain
-
         self.encoder = Encoder()
         self.head = ProjectionHead(resnet_dim, embedding_dim)
 
     def forward(self, x):
-        representation = self.encoder(x)
+        return self.encoder(x)
 
-        # if prediction (classification) use h instead of g(h)
-        return self.head(representation) if self.pretrain else representation
+    def project(self, x):
+        x = self.forward(x)
+        return self.head(x)
