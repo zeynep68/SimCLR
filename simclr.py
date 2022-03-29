@@ -21,7 +21,7 @@ class ProjectionHead(nn.Module):
                                   nn.Linear(resnet_dim, embedding_dim))
 
     def forward(self, x):
-        x = x.view(x.shape[0], -1)
+        #x = x.view(x.shape[0], -1)
         return self.head(x)
 
 
