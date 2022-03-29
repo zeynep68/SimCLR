@@ -50,7 +50,6 @@ def train_step(model, optimizer, criterion, view1, view2):
 
     outputs1 = model.project(view1)
     outputs2 = model.project(view2)
-    print('outputs1:', outputs1)
 
     loss = criterion(outputs1, outputs2)
     print('loss:', loss)
