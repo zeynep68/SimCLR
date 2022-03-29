@@ -50,9 +50,10 @@ def train_step(model, optimizer, criterion, view1, view2):
 
     outputs1 = model.project(view1)
     outputs2 = model.project(view2)
+    print('outputs1:', outputs1)
 
     loss = criterion(outputs1, outputs2)
-    print(loss)
+    print('loss:', loss)
     loss.backward()
     optimizer.step()
 
@@ -63,7 +64,7 @@ def get_config():
             'num_views': 2}
 
 
-def pretrain(config):  # TODO: rename because here: learn representations
+def learn_representations(config):
     # TODO: is this correct??
     # or is the order in which batches are created same??
     trainloader = load_unlabeled_data(config)
@@ -80,6 +81,6 @@ def pretrain(config):  # TODO: rename because here: learn representations
 
 if __name__ == "__main__":
     set_seed()
-    pretrain(get_config())  # TODO: gradient accumulation
+    learn_representations(get_config())  # TODO: gradient accumulation
 
     # fine-tun on supervised stl10
