@@ -20,7 +20,7 @@ def set_device():
 
 def get_config():
     return {'batch_size': 256, 'num_workers': 2, 'temperature': 0.5,
-            'epochs': 5, 'lr': 3e-4, 'weight_decay': 1e-6,
+            'epochs': 50, 'lr': 3e-4, 'weight_decay': 1e-6,
             'device': set_device(), 'num_views': 2, 'pin_memory': True,
             'use_wandb': True, 'save_model': False, 'load_model': False}
 
