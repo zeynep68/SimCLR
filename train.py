@@ -1,4 +1,4 @@
-from torch.optim import Adam
+from torch.optim import AdamW
 from torch.utils.data import DataLoader
 from torchvision.datasets import STL10
 
@@ -52,7 +52,7 @@ def learn_embedding(config):
 
     model = SimCLRNet()
     criterion = ContrastiveLoss(config['batch_size'], config['device'])
-    optimizer = Adam(model.parameters(), lr=config['lr'],
+    optimizer = AdamW(model.parameters(), lr=config['lr'],
                      weight_decay=config['weight_decay'])
 
     if config['use_wandb']:
