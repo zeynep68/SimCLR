@@ -10,4 +10,4 @@ def initialize_logging():
 
 
 def log_loss(loss):
-    wandb.log(loss)
+    wandb.log({'loss': loss})
