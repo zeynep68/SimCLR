@@ -27,12 +27,13 @@ def set_device():
 def load_unlabeled_data(config):
     trainset = STL10(root='./data', download=True, transform=DataAugmentation(),
                      split='unlabeled')
-    return get_dataloader(trainset, config['batch_size'], config['num_workers'])
+    return get_dataloader(trainset, config['batch_size'], config['num_workers'],
+                          config['pin_memory'])
 
 
-def get_dataloader(dataset, batch_size, num_workers):
+def get_dataloader(dataset, batch_size, num_workers, pin_memory):
     return DataLoader(dataset, batch_size=batch_size, shuffle=True,
-                      num_workers=num_workers)
+                      num_workers=num_workers, pin_memory=pin_memory)
 
 
 def train_one_epoch(config, trainloader, model, optimizer, criterion):
