@@ -1,3 +1,4 @@
+import torch
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
 from torchvision.datasets import STL10
@@ -6,6 +7,8 @@ from simclr import SimCLRNet
 from logs import initialize_logging, log_loss
 from loss import ContrastiveLoss
 from augmentation import DataAugmentation
+
+PATH = './SimCLR.ckpt'
 
 
 def load_unlabeled_data(config):
@@ -53,7 +56,7 @@ def learn_embedding(config):
     model = SimCLRNet()
     criterion = ContrastiveLoss(config['batch_size'], config['device'])
     optimizer = AdamW(model.parameters(), lr=config['lr'],
-                     weight_decay=config['weight_decay'])
+                      weight_decay=config['weight_decay'])
 
     if config['use_wandb']:
         initialize_logging()
@@ -61,6 +64,10 @@ def learn_embedding(config):
     for e in range(config['epochs']):
         train_one_epoch(config, trainloader, model, optimizer, criterion)
 
-    # TODO: save model
-    if config['save_model']:
-        pass
+        # TODO: save model
+        if config['save_model']:
+            torch.save(model.state_dict(), PATH)
+        print('test')
+        if config['load_model']:
+            model.load_state_dict(torch.load(PATH))
+        print('test2')
