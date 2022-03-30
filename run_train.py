@@ -55,7 +55,7 @@ def train_step(model, optimizer, criterion, view1, view2, config):
     loss = criterion(outputs1, outputs2)
     if config['use_wandb']:
         log_loss(loss.item())
-    
+
     loss.backward()
     optimizer.step()
 
@@ -78,7 +78,6 @@ def main(config):
         initialize_logging()
 
     for e in range(config['epochs']):
-        print(f'------------------------------\nEpoch: {e + 1}')
         train_one_epoch(config, trainloader, model, optimizer, criterion)
 
     # TODO: save model
