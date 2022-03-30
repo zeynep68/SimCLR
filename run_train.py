@@ -64,7 +64,7 @@ def train_step(model, optimizer, criterion, view1, view2, config):
 
 
 def get_config():
-    return {'batch_size': 256, 'num_workers': 2, 'temperature': 0.1,
+    return {'batch_size': 256, 'num_workers': 2, 'temperature': 0.5,
             'epochs': 5, 'lr': 3e-4, 'weight_decay': 1e-6,
             'device': set_device(), 'num_views': 2, 'pin_memory': True,
             'use_wandb': True}
