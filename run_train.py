@@ -43,6 +43,8 @@ def train_one_epoch(config, trainloader, model, optimizer, criterion):
         view1 = view1.to(config['device'])
         view2 = view2.to(config['device'])
 
+        criterion.batch_size = view1.shape[0]  # last batch has less images
+
         train_step(model, optimizer, criterion, view1, view2, config)
 
 
