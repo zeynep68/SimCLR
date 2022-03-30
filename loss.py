@@ -23,7 +23,7 @@ class ContrastiveLoss(nn.Module):
         mask = mask.repeat(self.num_views, self.num_views)
         mask = self.mask_out_self_contrast_cases(mask)
 
-        return mask
+        return mask.to(self.device)
 
     def forward(self, view1, view2):
         # l2 normalization
@@ -36,17 +36,14 @@ class ContrastiveLoss(nn.Module):
         cosine_similarity = (views @ views.T) / self.temperature
 
         mask = self.get_positive_pairs()
-        mask = mask.to(self.device)
 
         # just positive pairs - in each row one value for pos. pair
         nominator = cosine_similarity * mask
         nominator = nominator.sum(axis=1)
 
-        # for denominator just mask-out self contrast cases
         # contains negative & positive pairs
         mask = torch.ones_like(mask)
         mask = self.mask_out_self_contrast_cases(mask)
-        mask = mask.to(self.device)
 
         denominator = torch.exp(cosine_similarity) * mask
         denominator = torch.log(denominator.sum(axis=1))
