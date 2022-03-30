@@ -6,11 +6,10 @@ class DataAugmentation:
 
     def __init__(self, img_size=96):
         gaussian_blur = T.GaussianBlur(kernel_size=3)
-        color_jitter = T.ColorJitter(0.8, 0.8, 0.8, 0.2)
+        # color_jitter = T.ColorJitter(0.8, 0.8, 0.8, 0.2)
 
         self.transform = T.Compose([T.ToTensor(), T.RandomResizedCrop(img_size),
                                     T.RandomHorizontalFlip(0.5),
-                                    T.RandomApply([color_jitter], 0.5),
                                     T.RandomApply([gaussian_blur], 0.5),
                                     T.RandomGrayscale(0.2),
                                     T.Normalize(mean=(0.485, 0.456, 0.406),
