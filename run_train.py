@@ -75,7 +75,8 @@ def main(config):
 
     model = SimCLRNet()
     criterion = ContrastiveLoss(config['batch_size'], config['device'])
-    optimizer = Adam(model.parameters(), lr=config['lr'])
+    optimizer = Adam(model.parameters(), lr=config['lr'],
+                     weight_decay=config['weight_decay'])
 
     if config['use_wandb']:
         initialize_logging()
