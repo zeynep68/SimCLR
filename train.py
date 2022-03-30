@@ -64,10 +64,5 @@ def learn_embedding(config):
     for e in range(config['epochs']):
         train_one_epoch(config, trainloader, model, optimizer, criterion)
 
-        # TODO: save model
-        if config['save_model']:
-            torch.save(model.state_dict(), PATH)
-        print('test')
-        if config['load_model']:
-            model.load_state_dict(torch.load(PATH))
-        print('test2')
+    if config['save_model']:
+        torch.save(model.state_dict(), PATH)
