@@ -12,6 +12,19 @@ class ContrastiveLoss(nn.Module):
 
         self.temperature = temperature
 
+    def mask_out_self_contrast_cases(self, mask):
+        size = torch.arange(self.num_views * self.batch_size)
+        mask[size, size] = 0
+
+        return mask
+
+    def get_positive_pairs(self):
+        mask = torch.eye(self.batch_size)
+        mask = mask.repeat(self.num_views, self.num_views)
+        mask = self.mask_out_self_contrast_cases(mask)
+
+        return mask
+
     def forward(self, view1, view2):
         # l2 normalization
         view1 = F.normalize(view1, dim=1)
@@ -22,16 +35,7 @@ class ContrastiveLoss(nn.Module):
 
         cosine_similarity = (views @ views.T) / self.temperature
 
-        # negative pairs are masked-out
-        mask = torch.eye(self.batch_size)
-        mask = mask.repeat(self.num_views, self.num_views)
-        # mask-out self contrast cases
-        size = torch.arange(self.num_views * self.batch_size)
-        mask[size, size] = 0
-
-        num_pos_pairs = mask.sum(axis=1)  # self.views * self.batch_size
-        num_pos_pairs = num_pos_pairs.to(self.device)
-
+        mask = self.get_positive_pairs()
         mask = mask.to(self.device)
 
         # just positive pairs - in each row one value for pos. pair
@@ -41,16 +45,12 @@ class ContrastiveLoss(nn.Module):
         # for denominator just mask-out self contrast cases
         # contains negative & positive pairs
         mask = torch.ones_like(mask)
-        mask[size, size] = 0
-
+        mask = self.mask_out_self_contrast_cases(mask)
         mask = mask.to(self.device)
 
-        # compute log
         denominator = torch.exp(cosine_similarity) * mask
-        denominator = denominator.sum(axis=1)
-        denominator = torch.log(denominator)
+        denominator = torch.log(denominator.sum(axis=1))
 
-        loss = nominator - denominator  # - because of log
-        loss = - loss
+        loss = - (nominator - denominator)  # - because of log
 
         return loss.mean()
