@@ -34,8 +34,6 @@ def train_one_epoch(config, trainloader, model, optimizer, criterion):
         criterion.batch_size = view1.shape[0]  # last batch has less images
 
         train_step(model, optimizer, criterion, view1, view2, config)
-        if config['save_model']:
-            torch.save(model.state_dict(), PATH)
 
 
 def train_step(model, optimizer, criterion, view1, view2, config):
